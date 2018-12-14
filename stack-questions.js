@@ -1,6 +1,6 @@
 'use strict';
 
-const { Stack } = require('./stack');
+const { Stack, display } = require('./stack');
 
 //input:10101
 //output: true
@@ -104,3 +104,59 @@ function testValidParens() {
 }
 
 testValidParens();
+
+
+/* 
+Sort Stack
+Examples:
+Input:*5,9,2,7,15,1
+Output: *1,2,5,7,9,15
+
+*1,2,3,4,5,6
+*6,5,4,3,2,1
+
+Input:*5,9,2,7,15,1
+Output: *1,2,5,7,9,15
+
+While stack1 !== empty,
+temp variable = stack1.pop
+if stack2 is empty, stack2.push(temp)
+else if stack2.top.data <= temp, stack2.push(temp)
+else, while (stack2 is not empty and stack2.top.data is > temp) => stack1.push(stack2.pop)
+(..else) stack2.push(temp)
+stack2 will be in descending order
+while stack2 isn't empty, stack1.push(stack2.pop)
+return stack1
+
+*/
+
+function sortStack(stack){
+  const reversed = new Stack();
+
+  while(stack.top !== null){
+    const temp = stack.pop();
+
+    while(reversed.top !== null && temp < reversed.top.data){
+      stack.push(reversed.pop());
+    }
+
+    reversed.push(temp);
+  } 
+
+  while(reversed.top !== null){
+    stack.push(reversed.pop());
+  }
+
+  return stack;
+}
+
+function testSortStack(){
+  const stack = new Stack();
+  [5,9,2,7,15,1].forEach(item => stack.push(item));
+  display(stack);
+  sortStack(stack);
+  console.log("--------");
+  display(stack);
+}
+
+testSortStack();
